@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Taller 1 2P</string>
+    <string name="main_title">Nueva actividad</string>
+    <string name="device_label">Pixel 8 Android 15</string>
+    <string name="button_press">Presionar</string>
+    <string name="button_pressed_message">Botón presionado</string>
+</resources>
