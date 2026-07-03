@@ -89,14 +89,14 @@
                             android:layout_height="wrap_content">
 
                         <TextView
-                                android:id="@+id/celdaIdVacia"
                                 android:layout_width="76dp"
                                 android:layout_height="56dp"
                                 android:background="@drawable/tabla_cell_background"
                                 android:gravity="center"
                                 android:text="-"
                                 android:textColor="#665C6B"
-                                android:textSize="15sp" />
+                                android:textSize="15sp"
+                                android:id="@+id/tblistado" />
 
                         <TextView
                                 android:id="@+id/celdaNombreVacia"

@@ -3,6 +3,7 @@ package com.example.taller_1_2p;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -133,20 +134,19 @@ public class MainActivity extends AppCompatActivity {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_NOMBRE, nombre);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_APELLIDO, apellido);
+        values.put(FeedReaderContract.FeedEntry.column1, nombre);
+        values.put(FeedReaderContract.FeedEntry.column2, apellido);
 
         String selection = FeedReaderContract.FeedEntry._ID + " = ?";
         String[] selectionArgs = {id};
         int count = db.update(
-                FeedReaderContract.FeedEntry.TABLE_NAME,
+                FeedReaderContract.FeedEntry.nameTable,
                 values,
                 selection,
                 selectionArgs
         );
-        db.close();
-
         Toast.makeText(this, "Registros actualizados: " + count, Toast.LENGTH_SHORT).show();
+        db.close();
     }
 
     public void eliminar(View vista) {
@@ -165,14 +165,24 @@ public class MainActivity extends AppCompatActivity {
                 selection,
                 selectionArgs
         );
-        db.close();
 
         if (deletedRows > 0) {
+            long registrosRestantes = DatabaseUtils.queryNumEntries(
+                    db,
+                    FeedReaderContract.FeedEntry.TABLE_NAME
+            );
+            if (registrosRestantes == 0) {
+                db.execSQL(
+                        "DELETE FROM sqlite_sequence WHERE name = ?",
+                        new String[]{FeedReaderContract.FeedEntry.TABLE_NAME}
+                );
+            }
             txtid.setText("");
             txtnombre.setText("");
             txtapellido.setText("");
         }
 
+        db.close();
         Toast.makeText(this, "Registros eliminados: " + deletedRows, Toast.LENGTH_SHORT).show();
     }
 }
